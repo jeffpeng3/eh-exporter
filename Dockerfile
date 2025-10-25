@@ -25,9 +25,6 @@ ENV PATH="/app/.venv/bin:$PATH"
 
 ENV PYTHONUNBUFFERED=1
 
-ENV ID
-ENV PASS
-
 WORKDIR /app
 
 CMD ["python3", "-u", "main.py"]
