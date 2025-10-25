@@ -1,0 +1,12 @@
+[project]
+name = "eh-exporter"
+version = "0.1.0"
+requires-python = ">=3.13"
+dependencies = [
+    "beautifulsoup4>=4.14.2",
+    "lxml>=6.0.2",
+    "prometheus-client[aiohttp]",
+]
+
+[tool.uv.sources]
+prometheus-client = { git = "https://github.com/prometheus/client_python.git" }
