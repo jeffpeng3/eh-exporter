@@ -33,11 +33,7 @@ class Parser:
             "Quality": Gauge("eh_hath_client_quality", "Quality", ["id"]),
             "Hitrate": Gauge("eh_hath_client_hitrate", "Hitrate", ["id"]),
             "Hathrate": Gauge("eh_hath_client_hathrate", "Hathrate", ["id"]),
-            "P1": Gauge("eh_hath_client_static_range_p1", "P1", ["id"]),
-            "P2": Gauge("eh_hath_client_static_range_p2", "P2", ["id"]),
-            "P3": Gauge("eh_hath_client_static_range_p3", "P3", ["id"]),
-            "P4": Gauge("eh_hath_client_static_range_p4", "P4", ["id"]),
-            "HC": Gauge("eh_hath_client_static_range_hc", "HC", ["id"]),
+            "Static Range": Gauge("eh_hath_client_static_range", "Static Range", ["id", "type"]),
         }
 
     async def _parse_static_range(self, cid: str) -> None:
@@ -52,7 +48,7 @@ class Parser:
         static_ranges = static_range_str.split(", ")
         for sr in static_ranges:
             sr_type, sr_value = sr.split(" = ")
-            self.hath_client[sr_type].labels(id=cid).set(float(sr_value))
+            self.hath_client["Static Range"].labels(id=cid, type=sr_type).set(float(sr_value))
 
     async def _parse_hct(self, soup: BeautifulSoup) -> None:
         table = soup.find("table", {"id": "hct"})
