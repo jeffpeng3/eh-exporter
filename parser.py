@@ -1,5 +1,6 @@
 from bs4 import BeautifulSoup
 from aiohttp import ClientSession
+from aiohttp.client_exceptions import ClientConnectorDNSError
 from prometheus_client import Gauge
 from asyncio import create_task
 from asyncio import sleep
@@ -97,9 +98,12 @@ class Parser:
 
     async def update_hath(self) -> None:
         while True:
-            async with self.session.get(f"{self.base_url}/hentaiathome.php") as response:
-                soup = BeautifulSoup(await response.text(), "lxml")
-
+            try:
+                async with self.session.get(f"{self.base_url}/hentaiathome.php") as response:
+                    soup = BeautifulSoup(await response.text(), "lxml")
+            except ClientConnectorDNSError:
+                print("DNS Error, restart may help.")
+                quit(1)
             create_task(self._parse_hct(soup))
             create_task(self._parse_hathstat(soup))
             await sleep(60)
